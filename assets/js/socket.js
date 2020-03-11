@@ -6,7 +6,7 @@
 //
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
-import {Socket} from "phoenix"
+import {Socket, Presence} from "phoenix"
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
@@ -57,15 +57,28 @@ socket.connect()
 // Now that you are connected, you can join channels with a topic:
 let channel = socket.channel("room", {})
 let message = $('#message-input')
-let nickName = "Nickname"
 let chatMessages = document.getElementById("chat-messages")
+
+let presences = {}
+let onlineUsers = document.getElementById("online-users")
+
+let listUsers = (user) => {
+  return {
+    user: user
+  }
+}
+
+let renderUsers = (presences) => {
+  onlineUsers.innerHTML = Presence.list(presences, listUsers)
+  .map(presence => `
+    <li>${presence.user}</li>`).join("")
+}
 
 message.focus();
 
 message.on('keypress', event => {
   if(event.keyCode == 13) {
-    channel.push('message:new', {message: message.val(), 
-                                 user: nickName})
+    channel.push('message:new', {message: message.val()})
     message.val("")
   }
 });
@@ -77,6 +90,18 @@ channel.on('message:new', payload => {
   chatMessages.appendChild(template);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 })
+
+// presence_state
+channel.on('presence_state', state => {
+  presences = Presence.syncState(presences, state)
+  renderUsers(presences)
+});
+
+// presence_diff
+channel.on('presence_diff', diff => {
+  presences = Presence.syncDiff(presences, diff)
+  renderUsers(presences)
+});
 
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
