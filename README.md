@@ -1,4 +1,6 @@
 # Chatourius
+Elixir/Phoenix — Build a simple chat room
+With Coherence, Channels and Presence from [Medium Blog of Stephan Bakkelund Valois](https://medium.com/@Stephanbv/elixir-phoenix-build-a-simple-chat-room-7f20ee8e8f9c) but modified with current packages such as [appprova/coherance](https://github.com/appprova/coherence) with ecto-sql 3 and phoenix 14 support
 
 To start your Phoenix server:
 
