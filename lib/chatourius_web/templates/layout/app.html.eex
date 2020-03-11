@@ -27,6 +27,7 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>window.userToken = "<%= assigns[:user_id] %>"</script>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
