@@ -11,7 +11,9 @@ defmodule Chatourius.Application do
       # Start the Ecto repository
       Chatourius.Repo,
       # Start the endpoint when the application starts
-      ChatouriusWeb.Endpoint
+      ChatouriusWeb.Endpoint,
+      # Start the presence when the application starts
+      ChatouriusWeb.Presence
       # Starts a worker by calling: Chatourius.Worker.start_link(arg)
       # {Chatourius.Worker, arg},
     ]
